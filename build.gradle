@@ -1,0 +1,39 @@
+plugins {
+  id 'nu.studer.jooq' version '7.1.1'
+  id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  jooqGenerator 'com.h2database:h2:2.1.210'
+
+  implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+  implementation 'org.jooq:jooq:3.16.5'
+  implementation 'com.h2database:h2:2.1.210'
+}
+
+compileKotlin {
+  kotlinOptions.jvmTarget = "17"
+}
+
+compileTestKotlin {
+  kotlinOptions.jvmTarget = "17"
+}
+
+jooq {
+  configurations {
+    main {
+      generationTool {
+        jdbc {
+          driver = 'org.h2.Driver'
+          url = 'jdbc:h2:file:./db/main;INIT=RUNSCRIPT FROM \'./db/init.sql\''
+          user = 'sa'
+          password = ''
+        }
+      }
+    }
+  }
+}
